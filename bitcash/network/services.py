@@ -81,14 +81,13 @@ class BitcoinDotComAPI():
     MAIN_TX_AMOUNT_API = MAIN_TX_API
     MAIN_RAW_API = MAIN_ENDPOINT + 'transaction/details/{}'
     TX_PUSH_PARAM = 'rawtx'
-    TEST_ENDPOINT = 'https://api.bitcore.io/api/BCH/testnet/'
-    TEST_ADDRESS_API = TEST_ENDPOINT + 'address/{}'
-    TEST_BALANCE_API = TEST_ADDRESS_API + 'balance'
-    TEST_UNSPENT_API = TEST_ADDRESS_API + '?unspent=true'
-    TEST_TX_PUSH_API = TEST_ENDPOINT + 'tx/send'
-    TEST_TX_API = TEST_ENDPOINT + 'tx/{}'
+    TEST_ENDPOINT = 'https://trest.bitcoin.com/v2/'
+    TEST_ADDRESS_API = TEST_ENDPOINT + 'address/details/{}'
+    TEST_UNSPENT_API = TEST_ENDPOINT + 'address/utxo/{}'
+    TEST_TX_PUSH_API = TEST_ENDPOINT + '/rawtransactions/sendRawTransaction/{}'
+    TEST_TX_API = TEST_ENDPOINT + 'transaction/details/{}'
     TEST_TX_AMOUNT_API = TEST_TX_API
-   
+    TEST_RAW_API = TEST_ENDPOINT + 'transaction/details/{}'
 
     @classmethod
     def get_balance(cls, address):
@@ -374,13 +373,13 @@ class NetworkAPI:
                           BitcoreAPI.get_tx_amount]
     GET_RAW_TX_MAIN = [BitcoinDotComAPI.get_raw_transaction]
 
-    GET_BALANCE_TEST = [BitcoinDotComAPI.get_balance_testnet,
-                        BitcoreAPI.get_balance_testnet]
+    GET_BALANCE_TEST = [BitcoreAPI.get_balance_testnet, BitcoinDotComAPI.get_balance_testnet
+                        ]
     GET_TRANSACTIONS_TEST = [BitcoreAPI.get_transactions_testnet]
-    GET_UNSPENT_TEST = [BitcoinDotComAPI.get_unspent_testnet,
-                        BitcoreAPI.get_unspent_testnet]
-    BROADCAST_TX_TEST = [BitcoinDotComAPI.broadcast_tx_testnet,
-                         BitcoreAPI.broadcast_tx_testnet]
+    GET_UNSPENT_TEST = [BitcoreAPI.get_unspent_testnet ,BitcoinDotComAPI.get_unspent_testnet
+                        ]
+    BROADCAST_TX_TEST = [BitcoreAPI.broadcast_tx_testnet , BitcoinDotComAPI.broadcast_tx_testnet
+                         ]
     GET_TX_TEST = [BitcoinDotComAPI.get_transaction_testnet]
     GET_TX_AMOUNT_TEST = [BitcoreAPI.get_tx_amount_testnet]
     GET_RAW_TX_TEST = [BitcoinDotComAPI.get_raw_transaction_testnet]
