@@ -81,13 +81,14 @@ class BitcoinDotComAPI():
     MAIN_TX_AMOUNT_API = MAIN_TX_API
     MAIN_RAW_API = MAIN_ENDPOINT + 'transaction/details/{}'
     TX_PUSH_PARAM = 'rawtx'
-    TEST_ENDPOINT = 'https://trest.bitcoin.com/v2/'
-    TEST_ADDRESS_API = TEST_ENDPOINT + 'address/details/{}'
-    TEST_UNSPENT_API = TEST_ENDPOINT + 'address/utxo/{}'
-    TEST_TX_PUSH_API = TEST_ENDPOINT + '/rawtransactions/sendRawTransaction/{}'
-    TEST_TX_API = TEST_ENDPOINT + 'transaction/details/{}'
+    TEST_ENDPOINT = 'https://api.bitcore.io/api/BCH/testnet/'
+    TEST_ADDRESS_API = TEST_ENDPOINT + 'address/{}'
+    TEST_BALANCE_API = TEST_ADDRESS_API + '/balance'
+    TEST_UNSPENT_API = TEST_ADDRESS_API + '/?unspent=true'
+    TEST_TX_PUSH_API = TEST_ENDPOINT + 'tx/send'
+    TEST_TX_API = TEST_ENDPOINT + 'tx/{}'
     TEST_TX_AMOUNT_API = TEST_TX_API
-    TEST_RAW_API = TEST_ENDPOINT + 'transaction/details/{}'
+   
 
     @classmethod
     def get_balance(cls, address):
