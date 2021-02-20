@@ -73,7 +73,7 @@ class InsightAPI:
 
 class BitcoinDotComAPI():
     """ rest.bitcoin.com API """
-    MAIN_ENDPOINT = 'https://rest.bitcoin.com/v2/'
+    MAIN_ENDPOINT = 'https://node.armilis.com/v2/'
     MAIN_ADDRESS_API = MAIN_ENDPOINT + 'address/details/{}'
     MAIN_UNSPENT_API = MAIN_ENDPOINT + 'address/utxo/{}'
     MAIN_TX_PUSH_API = MAIN_ENDPOINT + 'rawtransactions/sendRawTransaction/{}'
