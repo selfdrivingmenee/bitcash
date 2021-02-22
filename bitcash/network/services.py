@@ -91,6 +91,7 @@ class BitcoinDotComAPI():
 
     @classmethod
     def get_balance(cls, address):
+        #print("getting balance with our api")
         r = requests.get(cls.MAIN_ADDRESS_API.format(address),
                          timeout=DEFAULT_TIMEOUT)
         r.raise_for_status()  # pragma: no cover
@@ -203,7 +204,7 @@ class BitcoinDotComAPI():
         return [
             Unspent(currency_to_satoshi(tx['amount'], 'bch'),
                     tx['confirmations'],
-                    r.json()['scriptPubKey'],
+                    tx['scriptPubKey'],
                     tx['txid'],
                     tx['vout'])
             for tx in r.json()['utxos']
@@ -261,8 +262,8 @@ class BitcoreAPI(InsightAPI):
     MAIN_TX_AMOUNT_API = MAIN_TX_API
     TEST_ENDPOINT = 'https://api.bitcore.io/api/BCH/testnet/'
     TEST_ADDRESS_API = TEST_ENDPOINT + 'address/{}'
-    TEST_BALANCE_API = TEST_ADDRESS_API + 'balance'
-    TEST_UNSPENT_API = TEST_ADDRESS_API + '?unspent=true'
+    TEST_BALANCE_API = TEST_ADDRESS_API + '/balance'
+    TEST_UNSPENT_API = TEST_ADDRESS_API + '/?unspent=true'
     TEST_TX_PUSH_API = TEST_ENDPOINT + 'tx/send'
     TEST_TX_API = TEST_ENDPOINT + 'tx/{}'
     TEST_TX_AMOUNT_API = TEST_TX_API
@@ -347,6 +348,9 @@ class BitcoreAPI(InsightAPI):
 
     @classmethod
     def broadcast_tx_testnet(cls, tx_hex):  # pragma: no cover
+        print(cls.TEST_TX_PUSH_API)
+        print(tx_hex)
+
         r = requests.post(cls.TEST_TX_PUSH_API, json={
                           cls.TX_PUSH_PARAM: tx_hex,
                           'network': 'testnet',
@@ -376,9 +380,9 @@ class NetworkAPI:
     GET_BALANCE_TEST = [BitcoreAPI.get_balance_testnet, BitcoinDotComAPI.get_balance_testnet
                         ]
     GET_TRANSACTIONS_TEST = [BitcoreAPI.get_transactions_testnet]
-    GET_UNSPENT_TEST = [BitcoreAPI.get_unspent_testnet ,BitcoinDotComAPI.get_unspent_testnet
+    GET_UNSPENT_TEST = [BitcoreAPI.get_unspent_testnet, BitcoinDotComAPI.get_unspent_testnet
                         ]
-    BROADCAST_TX_TEST = [BitcoreAPI.broadcast_tx_testnet , BitcoinDotComAPI.broadcast_tx_testnet
+    BROADCAST_TX_TEST = [BitcoreAPI.broadcast_tx_testnet, BitcoinDotComAPI.broadcast_tx_testnet
                          ]
     GET_TX_TEST = [BitcoinDotComAPI.get_transaction_testnet]
     GET_TX_AMOUNT_TEST = [BitcoreAPI.get_tx_amount_testnet]
@@ -387,7 +391,6 @@ class NetworkAPI:
     @classmethod
     def get_balance(cls, address):
         """Gets the balance of an address in satoshi.
-
         :param address: The address in question.
         :type address: ``str``
         :raises ConnectionError: If all API services fail.
@@ -405,7 +408,6 @@ class NetworkAPI:
     @classmethod
     def get_balance_testnet(cls, address):
         """Gets the balance of an address on the test network in satoshi.
-
         :param address: The address in question.
         :type address: ``str``
         :raises ConnectionError: If all API services fail.
@@ -423,7 +425,6 @@ class NetworkAPI:
     @classmethod
     def get_transactions(cls, address):
         """Gets the ID of all transactions related to an address.
-
         :param address: The address in question.
         :type address: ``str``
         :raises ConnectionError: If all API services fail.
@@ -442,7 +443,6 @@ class NetworkAPI:
     def get_transactions_testnet(cls, address):
         """Gets the ID of all transactions related to an address on the test
         network.
-
         :param address: The address in question.
         :type address: ``str``
         :raises ConnectionError: If all API services fail.
@@ -460,7 +460,6 @@ class NetworkAPI:
     @classmethod
     def get_transaction(cls, txid):
         """Gets the full transaction details.
-
         :param txid: The transaction id in question.
         :type txid: ``str``
         :raises ConnectionError: If all API services fail.
@@ -479,7 +478,6 @@ class NetworkAPI:
     def get_transaction_testnet(cls, txid):
         """Gets the full transaction details on the test
         network.
-
         :param txid: The transaction id in question.
         :type txid: ``str``
         :raises ConnectionError: If all API services fail.
@@ -497,7 +495,6 @@ class NetworkAPI:
     @classmethod
     def get_tx_amount(cls, txid, txindex):
         """Gets the amount of a given transaction output.
-
         :param txid: The transaction id in question.
         :type txid: ``str``
         :param txindex: The transaction index in question.
@@ -518,7 +515,6 @@ class NetworkAPI:
     def get_tx_amount_testnet(cls, txid, txindex):
         """Gets the amount of a given transaction output on the
         test network.
-
         :param txid: The transaction id in question.
         :type txid: ``str``
         :param txindex: The transaction index in question.
@@ -538,7 +534,6 @@ class NetworkAPI:
     @classmethod
     def get_unspent(cls, address):
         """Gets all unspent transaction outputs belonging to an address.
-
         :param address: The address in question.
         :type address: ``str``
         :raises ConnectionError: If all API services fail.
@@ -557,7 +552,6 @@ class NetworkAPI:
     def get_unspent_testnet(cls, address):
         """Gets all unspent transaction outputs belonging to an address on the
         test network.
-
         :param address: The address in question.
         :type address: ``str``
         :raises ConnectionError: If all API services fail.
@@ -575,7 +569,6 @@ class NetworkAPI:
     @classmethod
     def get_raw_transaction(cls, txid):
         """Gets the raw, unparsed transaction details.
-
         :param txid: The transaction id in question.
         :type txid: ``str``
         :raises ConnectionError: If all API services fail.
@@ -594,7 +587,6 @@ class NetworkAPI:
     def get_raw_transaction_testnet(cls, txid):
         """Gets the raw, unparsed transaction details on the test
         network.
-
         :param txid: The transaction id in question.
         :type txid: ``str``
         :raises ConnectionError: If all API services fail.
@@ -612,13 +604,12 @@ class NetworkAPI:
     @classmethod
     def broadcast_tx(cls, tx_hex):  # pragma: no cover
         """Broadcasts a transaction to the blockchain.
-
         :param tx_hex: A signed transaction in hex form.
         :type tx_hex: ``str``
         :raises ConnectionError: If all API services fail.
         """
         success = None
-
+        print(tx_hex)
         for api_call in cls.BROADCAST_TX_MAIN:
             try:
                 success = api_call(tx_hex)
@@ -637,7 +628,6 @@ class NetworkAPI:
     @classmethod
     def broadcast_tx_testnet(cls, tx_hex):  # pragma: no cover
         """Broadcasts a transaction to the test network's blockchain.
-
         :param tx_hex: A signed transaction in hex form.
         :type tx_hex: ``str``
         :raises ConnectionError: If all API services fail.
